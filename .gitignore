@@ -3,10 +3,9 @@ node_modules
 .idea
 .fleet
 .code
-.codium
-
-
-
+.vscode
+.vscodium
+.ruby-lsp
 
 
 

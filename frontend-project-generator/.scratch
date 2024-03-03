@@ -1,0 +1,94 @@
+#!/opt/homebrew/bin/zsh || #!/bin/zsh
+function jsSetup() {
+	echo 📅 "It is "`date`
+
+	echo "🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬"
+	echo -e "1️⃣). What do you want to name your application/project? ie. 'sampleApp'";
+	read _project_name
+
+	echo -e "2️⃣). What package manager do you want to use? ie. 'npm', 'pnpm', 'yarn', 'bun'?";
+	read _package_manager
+
+	echo -e "3️⃣). What scripting language do you want to use? ie. 'js', 'ts'?";
+	read _script_language
+
+	echo -e "4️⃣). What styles language do you want to use? ie. 'css', 'scss', 'sass', 'less'?";
+	read _styles_language
+
+
+	echo "🧑🏻‍💻 Your application/project name is: "
+	echo $_project_name
+	echo "📦 Your package manager is: "
+	echo $_package_manager
+	echo "📜 Your scripting language is: "
+	echo $_script_language
+	echo "🎨 Your styles language is: "
+	echo $_styles_language
+
+   1). Create a new directory for the project:
+    mkdir $_project_name && cd $_project_name;
+
+   3). Generate files:
+    { touch index.html && mkdir src && touch src/app.$_script_language } &&
+    { mkdir styles && touch styles/main.$_styles_language };
+
+   3). Install dependencies:
+    if [[$_package_manager == "npm"]]; then
+        npm init -y &&
+        npm install eslint dotenv lite-server nodemon --save-dev;
+
+        if [[$_script_language == "ts"]]; then
+            npm install typescript --save-dev && tsc init;
+        fi
+
+    [ elif [$_package_manager == "bun" || $_package_manager == "pnpm"]; then
+        { $_package_manager init } &&
+        { $_package_manager add eslint dotenv lite-server nodemon --save-dev  };
+
+        if [[$_script_language == "ts"]]; then
+            $_package_manager add typescript --save-dev && tsc init;
+        fi
+    ]
+
+    [ elif [$_package_manager == "yarn"]; then
+        yarn init -y &&
+        yarn add eslint dotenv lite-server nodemon --save-dev;
+
+        if [[$_script_language == "ts"]]; then
+            yarn add typescript --save-dev && tsc init;
+        fi
+    ]
+    fi
+
+    case $_styles_language in "scss")
+        if [[$_package_manager == "npm"]]; then
+            $_package_manager install scss --save-dev
+        else
+            $_package_manager add scss --save-dev
+        fi
+    ;;
+    "sass")
+        if [[$_package_manager == "npm"]]; then
+            $_package_manager install sass --save-dev
+        else
+            $_package_manager add sass --save-dev
+        fi
+    ;;
+    "less")
+        if [[$_package_manager == "npm"]]; then
+            $_package_manager install less --save-dev
+        else
+            $_package_manager add less --save-dev
+        fi
+    ;;
+    *)
+        if [[$_package_manager == "npm"]]; then
+            $_package_manager install css --save-dev
+        else
+            $_package_manager add css --save-dev
+        fi
+     ;;
+    esac
+
+
+}

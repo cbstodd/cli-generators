@@ -24,3 +24,14 @@ def print_cta(message)
     ******************************************************************
   )
 end
+
+
+def check_answers(provided_answer, acceptable_answers)
+  acceptable_answers = acceptable_answers.split(',')
+  # TODO: Check to see if array of acceptable answers matches the provided answer.
+  if (provided_answer == acceptable_answers.exists?)
+    return true
+  else
+    raise print_cta("Unfortunately, that answer does not exist, Please start over...")
+  end
+end
