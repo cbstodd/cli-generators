@@ -28,11 +28,11 @@ def ask_questions()
 
 
 
-	print_cta("Your answers to generate: '#{$project_name}':")
-	puts "🧑🏻‍💻 Project name: \t( #{$project_name} )"
-	puts "📦 Package manager: \t( #{$package_manager} )"
-	puts "📜 Scripting language: \t( #{$script_language} )"
-	puts "🎨 Styles language: \t( #{$styles_language} )"
+	print_cta("Your answers for: \"#{$project_name}\":")
+	puts "🧑🏻‍💻 Project name: \t #{$project_name}"
+	puts "📦 Package manager: \t #{$package_manager}"
+	puts "📜 Scripting language: \t #{$script_language}"
+	puts "🎨 Styles language: \t #{$styles_language}"
 
 	puts "Do you want to generate the project (y)? Or start over (n)? (y/n) / or (q to quit)"
 	$generate_project = gets.chomp().downcase()
@@ -48,16 +48,12 @@ def ask_questions()
 		print_cta("Sorry, incorrect input, Please restart CLI.")
 		raise "Something within the generator went wrong, please restart the app and try again."
 	end
-
 end
 
 
 def scaffold_project()
 	print_cta("Generating project...")
 end
-
-
-ask_questions()
 
 END {
 	print_cta("Thanks for using Project Generator.")
