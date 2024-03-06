@@ -53,6 +53,9 @@ end
 
 def scaffold_project()
 	print_cta("Generating project...")
+	create_directory("#{$project_name}")
+	create_file('index', 'html', $html_content)
+
 end
 
 END {

@@ -9,6 +9,7 @@ def create_file(name, type, content='')
   end
 end
 
+
 def create_directory(path)
   if (path != '')
     FileUtils.mkdir_p(path)
@@ -17,13 +18,14 @@ def create_directory(path)
   end
 end
 
-def print_cta(message)
-  puts %(
-    ******************************************************************
-      #{message}
-    ******************************************************************
-  )
+def rename_directory(currrent_dir, new_dir)
+  if (currrent_dir != nil && new_dir != nil)
+    FileUtils.mv("#{currrent_dir}", "#{new_dir}")
+  else
+    raise "One of the two paramaters are empty: ('curr_dir', 'new_dir')"
+  end
 end
+
 
 def check_answers(provided_answer, acceptable_answers)
   acceptable_answers_array = acceptable_answers.split(',')
@@ -33,4 +35,13 @@ def check_answers(provided_answer, acceptable_answers)
     print_cta("Unfortunately, '#{provided_answer}' is not an option, Please start over...")
     ask_questions()
   end
+end
+
+
+def print_cta(message)
+  puts %(
+    ******************************************************************
+      #{message}
+    ******************************************************************
+  )
 end
