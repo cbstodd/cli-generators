@@ -18,6 +18,7 @@ def create_directory(path)
   end
 end
 
+
 def rename_directory(currrent_dir, new_dir)
   if (currrent_dir != nil && new_dir != nil)
     FileUtils.mv("#{currrent_dir}", "#{new_dir}")
