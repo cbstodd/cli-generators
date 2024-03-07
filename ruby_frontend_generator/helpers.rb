@@ -12,9 +12,18 @@ end
 
 def create_directory(path)
   if (path != '')
-    FileUtils.mkdir_p(path)
+    FileUtils.mkdir_p("#{path}")
   else
     raise "'path' value was not provided"
+  end
+end
+
+
+def change_directory(path)
+  if path != ''
+    Dir.chdir("#{path}")
+  else
+    raise "#{path} directory does not exist."
   end
 end
 
@@ -41,8 +50,8 @@ end
 
 def print_cta(message)
   puts %(
-    ******************************************************************
-      #{message}
-    ******************************************************************
+  ******************************************************************
+  #{message}
+  ******************************************************************
   )
 end

@@ -1,11 +1,13 @@
 require 'date'
 require 'fileutils'
 require './helpers.rb'
-# require './content.rb'
+require './content.rb'
 
 $todays_date = Date.today.strftime('Today is: %A, %b %d, %Y')
 # $styles_library = ''
-# $copyright_license = ''
+# TODO: Create a function to determine which license to use.
+# => For now, it's auto-assigned to always select MIT License.
+$copyright_license = $mit_license_content
 
 
 def ask_questions()
@@ -40,7 +42,7 @@ def ask_questions()
 	if $generate_project == 'q'
 		print_cta("Quitting...")
 	elsif ($generate_project == 'y')
-			scaffold_project()
+		scaffold_project()
 	elsif ($generate_project == 'n')
 		puts "Starting questions over....."
 		ask_questions()
@@ -54,8 +56,13 @@ end
 def scaffold_project()
 	print_cta("Generating project...")
 	create_directory("#{$project_name}")
+	change_directory("#{$project_name}")
 	create_file('index', 'html', $html_content)
-
+	create_file('', 'gitignore', $gitignore_content)
+	create_file('README', 'md', $readme_content)
+	if $copyright_license == $mit_license_content
+		create_file('LICENSE', 'md', $mit_license_content)
+	end
 end
 
 END {

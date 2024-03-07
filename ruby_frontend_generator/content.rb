@@ -105,7 +105,7 @@ console.log('Congratulations your application is running correctly! 🏄🏽‍�
 )
 
 $readme_content = %(
-# "#{$project_name.upcase!}"
+# "#{$project_name.uppercase!}"
 )
 
 $mit_license_content = %(
@@ -124,4 +124,17 @@ $apache2_license_content = %(
 
 $gplv3_license_content = %(
 
+)
+
+$gitignore_content = %(
+# Editors:
+.idea
+.vscode
+.vscodium
+.fleet
+
+# Project Files:
+node_modules
+.env
+.env.prod
 )
