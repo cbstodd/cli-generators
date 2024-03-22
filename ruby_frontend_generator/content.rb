@@ -52,7 +52,12 @@ $ts_html_content = %(
 </html>
 )
 
-$css_content = %(
+$css_main_content = %(
+@import url('variables.css')
+@import url('custom.css')
+)
+
+$css_variables_content = %(
 :root {
   --font-sans: "Roboto", sans-serif;
   --font-serif: "Roboto Slab", serif;
@@ -71,7 +76,9 @@ $css_content = %(
   --xl: 1.75rem;
   --xxl: 2rem;
 }
+)
 
+$css_custom_content = %(
 html,
 body {
   padding: 0;
@@ -105,7 +112,7 @@ console.log('Congratulations your application is running correctly! 🏄🏽‍�
 )
 
 $readme_content = %(
-# "#{$project_name.uppercase!}"
+# "#{$project_name.upcase}"
 )
 
 $mit_license_content = %(
@@ -137,4 +144,18 @@ $gitignore_content = %(
 node_modules
 .env
 .env.prod
+)
+
+$babelrc_content = %(
+{
+  "presets": ["@babel/preset-env"]
+}
+)
+
+$packagejson_js_scripts_content = %(
+  "scripts": {
+    "start-node": "nodemon ./src/index.js",
+    "start-site": "lite-server index.html",
+    "babel-node": "babel-node --presets='@babel/preset-env' --ignore='foo|bar|baz'",
+  }
 )

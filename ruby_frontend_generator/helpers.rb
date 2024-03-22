@@ -1,11 +1,11 @@
 require 'fileutils'
 
-def create_file(name, type, content='')
-  if (name != '' && type != '')
+def create_file(type, name='', content='')
+  if (type != '')
     File.write("#{name}.#{type}", "#{content}")
   else
-    raise "'name' or 'type' values were not provided"
-    # STDERR.puts "'name' or 'type' values were not provided"
+    STDERR.puts "'name' was nil, or 'type' value was not provided"
+    raise "'name' was nil, or 'type' value was not provided"
   end
 end
 

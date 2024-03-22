@@ -1,13 +1,12 @@
 require 'date'
 require 'fileutils'
 require './helpers.rb'
-require './content.rb'
 
 $todays_date = Date.today.strftime('Today is: %A, %b %d, %Y')
 # $styles_library = ''
-# TODO: Create a function to determine which license to use.
-# => For now, it's auto-assigned to always select MIT License.
-$copyright_license = $mit_license_content
+# TODO 1: Create a function to determine which license to use.
+# TODO 2: Add option for VITE https://vitejs.dev/guide/
+
 
 
 def ask_questions()
@@ -28,13 +27,23 @@ def ask_questions()
 	$styles_language = gets.chomp().downcase()
 	check_answers($styles_language, 'css,scss,sass')
 
+	puts "5). Do you want to use a license? (Y / n)"
+	$use_license = gets.chomp().downcase()
+	check_answers($use_license, 'y,n')
 
+	require './content.rb'
 
 	print_cta("Your answers for: \"#{$project_name}\":")
 	puts "🧑🏻‍💻 Project name: \t #{$project_name}"
 	puts "📦 Package manager: \t #{$package_manager}"
 	puts "📜 Scripting language: \t #{$script_language}"
 	puts "🎨 Styles language: \t #{$styles_language}"
+	if ($use_license == 'n')
+		puts "👎🏼 Not using a license."
+	else
+		puts "📝 License: \t\t YES (MIT)"
+		$use_license = 'y'
+	end
 
 	puts "Do you want to generate the project (y)? Or start over (n)? (y/n) / or (q to quit)"
 	$generate_project = gets.chomp().downcase()
@@ -47,24 +56,73 @@ def ask_questions()
 		puts "Starting questions over....."
 		ask_questions()
 	else
-		print_cta("Sorry, incorrect input, Please restart CLI.")
-		raise "Something within the generator went wrong, please restart the app and try again."
+		print_cta("Sorry, something went wrong, incorrect input. Starting over...")
+		ask_questions()
+		# raise "Something within the generator went wrong, please restart the app and try again."
+	end
+end
+
+def always_generated_files()
+	create_directory("#{$project_name}")
+	change_directory("#{$project_name}")
+	create_directory('styles')
+	create_file('./styles/main', $styles_language, $css_main_content)
+	create_file('./styles/variables', $styles_language, $css_variables_content)
+	create_file('./styles/custom', $styles_language, $css_custom_content)
+	create_file('', 'gitignore', $gitignore_content)
+	create_file('README', 'md', $readme_content)
+	if $use_license == 'y'
+		create_file('LICENSE', 'md', $mit_license_content)
+	end
+
+	# Generates index.html with js or ts.
+	if ($script_language == 'ts')
+		create_file('index', 'html', $ts_html_content)
+		create_directory('src')
+		create_file('src/index', 'ts', $ts_content)
+	else # IF JavaScript
+		create_file('index', 'html', $js_html_content)
+		create_directory('src')
+		create_file('src/index', 'js', $js_content)
+	end
+end
+
+# TODO 3: Package Managers are not being init'ed/generated.
+def install_dependencies(package_manager)
+	if (package_manager == 'bun')
+		puts( "Generating default bun.io project..." )
+		system('bun init', '-y')
+	elsif (package_manager == 'yarn')
+		puts( "Generating default yarn project..." )
+		system( 'yarn init', '-y' )
+		system( 'yarn add', 'nodemon lite-server @babel/preset-env babel-eslint eslint -D' )
+		puts( "Running 'eslint init', please answer questions for that (refer back to choices above if needed)..." )
+		create_file( 'babel.config', 'json', $babelrc_content )
+		puts( "Generating default eslint project, please answer questions (put scripts in ./src/index.#{$script_language})..." )
+		system( 'eslint init', '-y' )
+	else
+		puts( 'Generating default yarn project...' )
+		system( "#{package_manager} init", '-y' )
+		system( "#{package_manager} install", 'nodemon lite-server @babel/preset-env babel-eslint eslint -D' )
+		puts( "Running 'eslint init', please answer questions for that (refer back to choices above if needed)..." )
+		create_file( 'babel.config', 'json', $babelrc_content )
+		puts( "Generating default eslint project, please answer questions (put scripts in ./src/index.#{$script_language})..." )
+		system( 'eslint init', '-y' )
 	end
 end
 
 
 def scaffold_project()
-	print_cta("Generating project...")
-	create_directory("#{$project_name}")
-	change_directory("#{$project_name}")
-	create_file('index', 'html', $html_content)
-	create_file('', 'gitignore', $gitignore_content)
-	create_file('README', 'md', $readme_content)
-	if $copyright_license == $mit_license_content
-		create_file('LICENSE', 'md', $mit_license_content)
-	end
+	print_cta( "Generating project..." )
+	always_generated_files()
+	# Package Managers:
+	# TODO 3: Package Managers are not being init'ed/generated.
+	install_dependencies($package_manager)
 end
 
+ask_questions()
+
 END {
-	print_cta("Thanks for using Project Generator.")
+	# system( 'cd', $project_name )
+	print_cta( "Project finished generating!" )
 }
