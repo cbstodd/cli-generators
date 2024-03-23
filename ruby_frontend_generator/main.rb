@@ -7,8 +7,6 @@ $todays_date = Date.today.strftime('Today is: %A, %b %d, %Y')
 # TODO 1: Create a function to determine which license to use.
 # TODO 2: Add option for VITE https://vitejs.dev/guide/
 
-
-
 def ask_questions()
 	print_cta("#{$todays_date}. Welcome to Project Generator.\n\tPlease type your answers below.")
 
@@ -45,13 +43,16 @@ def ask_questions()
 		$use_license = 'y'
 	end
 
-	puts "Do you want to generate the project (y)? Or start over (n)? (y/n) / or (q to quit)"
+	puts( '---------------------------------------------------------------------------------')
+	puts "Do you want to generate the project (y)? Or start over (n)? (y/n) / or (q to quit)?"
 	$generate_project = gets.chomp().downcase()
 
 	if $generate_project == 'q'
 		print_cta("Quitting...")
 	elsif ($generate_project == 'y')
-		scaffold_project()
+		print_cta( "Generating project..." )
+		# scaffold_project()
+		always_generated_files()
 	elsif ($generate_project == 'n')
 		puts "Starting questions over....."
 		ask_questions()
@@ -65,10 +66,19 @@ end
 def always_generated_files()
 	create_directory("#{$project_name}")
 	change_directory("#{$project_name}")
+
 	create_directory('styles')
-	create_file('./styles/main', $styles_language, $css_main_content)
-	create_file('./styles/variables', $styles_language, $css_variables_content)
-	create_file('./styles/custom', $styles_language, $css_custom_content)
+	if ($styles_language == 'css')
+		create_file('styles/main', $styles_language, $css_main_content)
+		create_file('styles/variables', $styles_language, $css_variables_content)
+		create_file('styles/custom', $styles_language, $css_custom_content)
+	else
+		create_file('styles/main', $styles_language, $scss_main_content)
+		create_file('styles/_variables', $styles_language, $scss_variables_content)
+		create_file('styles/_custom', $styles_language, $scss_custom_content)
+	end
+
+	system('git init')
 	create_file('', 'gitignore', $gitignore_content)
 	create_file('README', 'md', $readme_content)
 	if $use_license == 'y'
@@ -85,14 +95,17 @@ def always_generated_files()
 		create_directory('src')
 		create_file('src/index', 'js', $js_content)
 	end
+
+		# Package Managers:
+		install_dependencies()
 end
 
 # TODO 3: Package Managers are not being init'ed/generated.
-def install_dependencies(package_manager)
-	if (package_manager == 'bun')
+def install_dependencies()
+	if ($package_manager == 'bun')
 		puts( "Generating default bun.io project..." )
 		system('bun init', '-y')
-	elsif (package_manager == 'yarn')
+	elsif ($package_manager == 'yarn')
 		puts( "Generating default yarn project..." )
 		system( 'yarn init', '-y' )
 		system( 'yarn add', 'nodemon lite-server @babel/preset-env babel-eslint eslint -D' )
@@ -101,23 +114,14 @@ def install_dependencies(package_manager)
 		puts( "Generating default eslint project, please answer questions (put scripts in ./src/index.#{$script_language})..." )
 		system( 'eslint init', '-y' )
 	else
-		puts( 'Generating default yarn project...' )
-		system( "#{package_manager} init", '-y' )
-		system( "#{package_manager} install", 'nodemon lite-server @babel/preset-env babel-eslint eslint -D' )
+		puts( "Generating project with #{$package_manager}..." )
+		system( "#{$package_manager} init", '-y' )
+		system( "#{$package_manager} install", 'nodemon lite-server @babel/preset-env babel-eslint eslint -D' )
 		puts( "Running 'eslint init', please answer questions for that (refer back to choices above if needed)..." )
 		create_file( 'babel.config', 'json', $babelrc_content )
 		puts( "Generating default eslint project, please answer questions (put scripts in ./src/index.#{$script_language})..." )
 		system( 'eslint init', '-y' )
 	end
-end
-
-
-def scaffold_project()
-	print_cta( "Generating project..." )
-	always_generated_files()
-	# Package Managers:
-	# TODO 3: Package Managers are not being init'ed/generated.
-	install_dependencies($package_manager)
 end
 
 ask_questions()

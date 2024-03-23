@@ -1,6 +1,6 @@
 require 'fileutils'
 
-def create_file(type, name='', content='')
+def create_file(name='', type='', content='')
   if (type != '')
     File.write("#{name}.#{type}", "#{content}")
   else

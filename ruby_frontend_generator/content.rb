@@ -53,8 +53,13 @@ $ts_html_content = %(
 )
 
 $css_main_content = %(
-@import url('variables.css')
-@import url('custom.css')
+@import url('variables.css');
+@import url('custom.css');
+)
+
+$scss_main_content = %(
+@import 'variables',
+@import 'custom';
 )
 
 $css_variables_content = %(
@@ -78,6 +83,25 @@ $css_variables_content = %(
 }
 )
 
+$scss_variables_content = %(
+$font-sans: "Roboto", sans-serif;
+$font-serif: "Roboto Slab", serif;
+$font-condensed: "Roboto Condensed", sans-serif;
+$font-mono: "Roboto Mono", monospaced;
+
+$darker: #222;
+$dark: #555;
+$grey: #ccc;
+$light-grey: #fdfdfd;
+
+$font-size: 16px;
+$sm: 0.75rem;
+$md: 1rem;
+$lg: 1.5rem;
+$xl: 1.75rem;
+$xxl: 2rem;
+)
+
 $css_custom_content = %(
 html,
 body {
@@ -86,6 +110,17 @@ body {
   font-size: var(--font-size);
   color: var(--darker);
   background-color: var(--light-grey);
+}
+)
+
+$scss_custom_content = %(
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-size: $font-size;
+  color: $darker;
+  background-color: $light-grey;
 }
 )
 
@@ -107,7 +142,8 @@ function sayName(name: string): string {
   return `No string parameter was provided, please include a string variable.`;
 }
 
-console.log(sayName('Chuck Norris,'));
+const chuck = sayName('Chuck Norris');
+console.log(chuck);
 console.log('Congratulations your application is running correctly! 🏄🏽‍♂️');
 )
 
