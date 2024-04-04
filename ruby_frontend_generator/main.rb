@@ -78,7 +78,7 @@ def always_generated_files()
 		create_file('styles/_custom', $styles_language, $scss_custom_content)
 	end
 
-	system('git init')
+	system( 'git init' )
 	create_file('', 'gitignore', $gitignore_content)
 	create_file('README', 'md', $readme_content)
 	if $use_license == 'y'
@@ -96,15 +96,14 @@ def always_generated_files()
 		create_file('src/index', 'js', $js_content)
 	end
 
-		# Package Managers:
-		install_dependencies()
+
 end
 
 # TODO 3: Package Managers are not being init'ed/generated.
 def install_dependencies()
 	if ($package_manager == 'bun')
 		puts( "Generating default bun.io project..." )
-		system('bun init', '-y')
+		system( 'bun init', '-y' )
 	elsif ($package_manager == 'yarn')
 		puts( "Generating default yarn project..." )
 		system( 'yarn init', '-y' )

@@ -1,52 +1,38 @@
 require 'fileutils'
 
-def create_file(name='', type='', content='')
-  if (type != '')
+def create_file(name = '', type = '', content = '')
+  if type != ''
     File.write("#{name}.#{type}", "#{content}")
   else
-    STDERR.puts "'name' was nil, or 'type' value was not provided"
+    warn "'name' was nil, or 'type' value was not provided"
     raise "'name' was nil, or 'type' value was not provided"
   end
 end
 
-
 def create_directory(path)
-  if (path != '')
-    FileUtils.mkdir_p("#{path}")
-  else
-    raise "'path' value was not provided"
-  end
-end
+  raise "'path' value was not provided" unless path != ''
 
+  FileUtils.mkdir_p("#{path}")
+end
 
 def change_directory(path)
-  if path != ''
-    Dir.chdir("#{path}")
-  else
-    raise "#{path} directory does not exist."
-  end
-end
+  raise "#{path} directory does not exist." unless path != ''
 
+  Dir.chdir("#{path}")
+end
 
 def rename_directory(currrent_dir, new_dir)
-  if (currrent_dir != nil && new_dir != nil)
-    FileUtils.mv("#{currrent_dir}", "#{new_dir}")
-  else
-    raise "One of the two paramaters are empty: ('curr_dir', 'new_dir')"
-  end
-end
+  raise "One of the two paramaters are empty: ('curr_dir', 'new_dir')" unless !currrent_dir.nil? && !new_dir.nil?
 
+  FileUtils.mv("#{currrent_dir}", "#{new_dir}")
+end
 
 def check_answers(provided_answer, acceptable_answers)
-  acceptable_answers_array = acceptable_answers.split(',')
-  if (acceptable_answers.include?(provided_answer))
-    return true
-  else
-    print_cta("Unfortunately, '#{provided_answer}' is not an option, Please start over...")
-    ask_questions()
-  end
-end
+  return true if acceptable_answers.split(',').include?(provided_answer)
 
+  print_cta("Unfortunately, '#{provided_answer}' is not an option, Please start over...")
+  ask_questions
+end
 
 def print_cta(message)
   puts %(
