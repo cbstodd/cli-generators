@@ -3,30 +3,7 @@
 require 'date'
 require 'fileutils'
 require './helpers'
-require_relative './content'
-
-# Imports content from Content module.
-class TextContent
-  include Content
-end
-
-content = TextContent.new
-
-@js_html_content = content.js_html_content
-@ts_html_content = content.ts_html_content
-@css_main_content = content.css_main_content
-@scss_main_content = content.scss_main_content
-@css_variables_content = content.css_variables_content
-@scss_variables_content = content.scss_variables_content
-@css_custom_content = content.css_custom_content
-@scss_custom_content = content.scss_custom_content
-@js_content = content.js_content
-@ts_content = content.ts_content
-@readme_content = content.readme_content
-@mit_license_content = content.mit_license_content
-@gitignore_content = content.gitignore_content
-@babelrc_content = content.babelrc_content
-@packagejson_js_scripts_content = content.packagejson_js_scripts_content
+require './content'
 
 # styles_library = ''
 # TODO 1: Create a function to determine which license to use.
@@ -115,29 +92,29 @@ class GenerateApp
 
     create_directory('styles')
     if @styles_language == 'css'
-      create_file('styles/main', @styles_language, @css_main_content)
-      create_file('styles/variables', @styles_language, @css_variables_content)
-      create_file('styles/custom', @styles_language, @css_custom_content)
+      create_file('styles/main', @styles_language, $css_main_content)
+      create_file('styles/variables', @styles_language, $css_variables_content)
+      create_file('styles/custom', @styles_language, $css_custom_content)
     else
-      create_file('styles/main', @styles_language, @scss_main_content)
-      create_file('styles/_variables', @styles_language, @scss_variables_content)
-      create_file('styles/_custom', @styles_language, @scss_custom_content)
+      create_file('styles/main', @styles_language, $scss_main_content)
+      create_file('styles/_variables', @styles_language, $scss_variables_content)
+      create_file('styles/_custom', @styles_language, $scss_custom_content)
     end
 
     system('git init')
-    create_file('', 'gitignore', @gitignore_content)
-    create_file('README', 'md', @readme_content)
-    create_file('LICENSE', 'md', @mit_license_content) if @use_license == 'y'
+    create_file('', 'gitignore', $gitignore_content)
+    create_file('README', 'md', $readme_content)
+    create_file('LICENSE', 'md', $mit_license_content) if @use_license == 'y'
 
     # Generates index.html with js or ts.
     if @script_language == 'ts'
-      create_file('index', 'html', @ts_html_content)
+      create_file('index', 'html', $ts_html_content)
       create_directory('src')
-      create_file('src/index', 'ts', @ts_content)
+      create_file('src/index', 'ts', $ts_content)
     else # IF JavaScript
-      create_file('index', 'html', @js_html_content)
+      create_file('index', 'html', $js_html_content)
       create_directory('src')
-      create_file('src/index', 'js', @js_content)
+      create_file('src/index', 'js', $js_content)
     end
   end
 
@@ -152,7 +129,7 @@ class GenerateApp
       system('yarn add', 'nodemon lite-server @babel/preset-env babel-eslint eslint -D')
       puts('Generating default yarn project...')
       puts("Running 'eslint init', please answer questions for that (refer back to choices above if needed)...")
-      create_file('babel.config', 'json', @babelrc_content)
+      create_file('babel.config', 'json', $babelrc_content)
       puts("Generating default eslint project, please answer questions (put scripts in ./src/index.#{@script_language})...")
       system('eslint init', '-y')
     else
@@ -160,7 +137,7 @@ class GenerateApp
       system("#{@package_manager} init", '-y')
       system("#{@package_manager} install", 'nodemon lite-server @babel/preset-env babel-eslint eslint -D')
       puts("Running 'eslint init', please answer questions for that (refer back to choices above if needed)...")
-      create_file('babel.config', 'json', @babelrc_content)
+      create_file('babel.config', 'json', $babelrc_content)
       puts("Generating default eslint project, please answer questions (put scripts in ./src/index.#{@script_language})...")
       system('eslint init', '-y')
     end

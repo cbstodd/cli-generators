@@ -1,48 +1,13 @@
 #!/Users/$USER/.rbenv/shims/ruby || #!/usr/bin/ruby
 
-module Content
-  attr_accessor :js_html_content,
-                :ts_html_content,
-                :css_main_content,
-                :scss_main_content,
-                :css_variables_content,
-                :scss_variables_content,
-                :css_custom_content,
-                :scss_custom_content,
-                :js_content,
-                :ts_content,
-                :readme_content,
-                :mit_license_content,
-                :gitignore_content,
-                :babelrc_content,
-                :packagejson_js_scripts_content
-
-  def initialize
-    @js_html_content = js_html_content
-    @ts_html_content = ts_html_content
-    @css_main_content = css_main_content
-    @scss_main_content = scss_main_content
-    @css_variables_content = css_variables_content
-    @scss_variables_content = scss_variables_content
-    @css_custom_content = css_custom_content
-    @scss_custom_content = scss_custom_content
-    @js_content = js_content
-    @ts_content = ts_content
-    @readme_content = readme_content
-    @mit_license_content = mit_license_content
-    @gitignore_content = gitignore_content
-    @babelrc_content = babelrc_content
-    @packagejson_js_scripts_content = packagejson_js_scripts_content
-  end
-
-  js_html_content = %(
+$js_html_content = %(
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sample Application</title>
-    <link rel="stylesheet" href="./main/style.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
     <script type="module" src="./src/index.js" async defer></script>
   </head>
   <body>
@@ -62,14 +27,14 @@ module Content
 </html>
 )
 
-  ts_html_content = %(
+$ts_html_content = %(
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sample Application</title>
-    <link rel="stylesheet" href="./main/style.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
     <script type="module" src="./build/index.js" async defer></script>
   </head>
   <body>
@@ -89,17 +54,17 @@ module Content
 </html>
 )
 
-  css_main_content = %(
+$css_main_content = %(
 @import url('variables.css');
 @import url('custom.css');
 )
 
-  scss_main_content = %(
+$scss_main_content = %(
 @import 'variables',
 @import 'custom';
 )
 
-  css_variables_content = %(
+$css_variables_content = %(
 :root {
   --font-sans: "Roboto", sans-serif;
   --font-serif: "Roboto Slab", serif;
@@ -120,26 +85,26 @@ module Content
 }
 )
 
-  scss_variables_content = %(
-font-sans: "Roboto", sans-serif;
-font-serif: "Roboto Slab", serif;
-font-condensed: "Roboto Condensed", sans-serif;
-font-mono: "Roboto Mono", monospaced;
+$scss_variables_content = %(
+$font-sans: "Roboto", sans-serif !important;
+$font-serif: "Roboto Slab", serif !important;
+$font-condensed: "Roboto Condensed", sans-serif !important;
+$font-mono: "Roboto Mono", monospaced !important;
 
-darker: #222;
-dark: #555;
-grey: #ccc;
-light-grey: #fdfdfd;
+$darker: #222 !important;
+$dark: #555 !important;
+$grey: #ccc !important;
+$light-grey: #fdfdfd !important;
 
-font-size: 16px;
-sm: 0.75rem;
-md: 1rem;
-lg: 1.5rem;
-xl: 1.75rem;
-xxl: 2rem;
+font-size: 16px !important default;
+$sm: 0.75rem !important;
+$md: 1rem !important;
+$lg: 1.5rem !important;
+$xl: 1.75rem !important;
+$xxl: 2rem !important;
 )
 
-  css_custom_content = %(
+$css_custom_content = %(
 html,
 body {
   padding: 0;
@@ -150,7 +115,7 @@ body {
 }
 )
 
-  scss_custom_content = %(
+$scss_custom_content = %(
 html,
 body {
   padding: 0;
@@ -161,8 +126,8 @@ body {
 }
 )
 
-  js_content = %(
-"use strict";
+$js_content = %(
+'use strict';
 
 function sayName(name) {
   return name;
@@ -173,7 +138,7 @@ console.log("Congratulations your application is running correctly! 🏄🏽‍�
 console.log(myName);
 )
 
-  ts_content = %(
+$ts_content = %(
 function sayName(name: string): string {
   if (name) return `Hello {name}`;
   return `No string parameter was provided, please include a string variable.`;
@@ -184,11 +149,11 @@ console.log(chuck);
 console.log('Congratulations your application is running correctly! 🏄🏽‍♂️');
 )
 
-  readme_content = %(
+$readme_content = %(
 # <PUT Repo/Project NAME HERE>
 )
 
-  mit_license_content = %(
+$mit_license_content = %(
 Copyright <YYYY> <YOUR NAME> [example website](https://example.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -198,15 +163,15 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 )
 
-  apache2_license_content = %(
+$apache2_license_content = %(
 
 )
 
-  gplv3_license_content = %(
+$gplv3_license_content = %(
 
 )
 
-  gitignore_content = %(
+$gitignore_content = %(
 # Editors:
 .idea
 .vscode
@@ -219,17 +184,16 @@ node_modules
 .env.prod
 )
 
-  babelrc_content = %(
+$babelrc_content = %(
 {
   "presets": ["@babel/preset-env"]
 }
 )
 
-  packagejson_js_scripts_content = %(
+$packagejson_js_scripts_content = %(
   "scripts": {
     "start-node": "nodemon ./src/index.js",
     "start-site": "lite-server index.html",
     "babel-node": "babel-node --presets='@babel/preset-env' --ignore='foo|bar|baz'",
   }
 )
-end
