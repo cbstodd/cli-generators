@@ -1,4 +1,4 @@
-# CLI Generators
+# CLI Generator aka Code Moraine 
 
 This is a personal set of Command Line Interface (CLI) apps that help my development workflow/s. 
 

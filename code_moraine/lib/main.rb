@@ -1,9 +1,9 @@
-#!/Users/USER/.rbenv/shims/ruby || #!/usr/bin/ruby
+#!/Users/$USER/.rbenv/shims/ruby || #!/usr/lib/ruby
 
 require 'date'
 require 'fileutils'
-require './helpers'
-require './content'
+require 'helpers'
+require 'content'
 
 # styles_library = ''
 # TODO 1: Create a function to determine which license to use.
