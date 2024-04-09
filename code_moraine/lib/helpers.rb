@@ -43,3 +43,9 @@ def print_cta(message)
   ******************************************************************
   )
 end
+
+def run_cmd(file, commands = '')
+  raise `'file' paramater was not provided` unless file != ''
+
+  Process.spawn(`ruby #{file}`, `#{commands}`)
+end

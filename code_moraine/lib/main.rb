@@ -1,9 +1,7 @@
-#!/Users/$USER/.rbenv/shims/ruby || #!/usr/lib/ruby
-
 require 'date'
 require 'fileutils'
-require 'helpers'
-require 'content'
+require_relative './helpers'
+require_relative './content'
 
 # styles_library = ''
 # TODO 1: Create a function to determine which license to use.
@@ -49,8 +47,6 @@ class GenerateApp
     puts '5). Do you want to use a license? (Y / n)'
     @use_license = gets.chomp.downcase
     check_answers(@use_license, 'y,n')
-
-    require './content'
 
     print_cta("Your answers for: \"#{@project_name}\":")
     puts "🧑🏻‍💻 Project name: \t #{@project_name}"
@@ -116,30 +112,26 @@ class GenerateApp
       create_directory('src')
       create_file('src/index', 'js', $js_content)
     end
-  end
 
-  # TODO: 3: Package Managers are not being init'ed/generated.
-  def install_dependencies
-    if @package_manager == 'bun'
-      system('bun init', '-y')
-      puts('Generating default bun.io project...')
-      raise 'Bun project was not generated...'
-    elsif @package_manager == 'yarn'
-      system('yarn init', '-y')
-      system('yarn add', 'nodemon lite-server @babel/preset-env babel-eslint eslint -D')
-      puts('Generating default yarn project...')
-      puts("Running 'eslint init', please answer questions for that (refer back to choices above if needed)...")
-      create_file('babel.config', 'json', $babelrc_content)
-      puts("Generating default eslint project, please answer questions (put scripts in ./src/index.#{@script_language})...")
-      system('eslint init', '-y')
-    else
-      puts("Generating project with #{@package_manager}...")
-      system("#{@package_manager} init", '-y')
-      system("#{@package_manager} install", 'nodemon lite-server @babel/preset-env babel-eslint eslint -D')
-      puts("Running 'eslint init', please answer questions for that (refer back to choices above if needed)...")
-      create_file('babel.config', 'json', $babelrc_content)
-      puts("Generating default eslint project, please answer questions (put scripts in ./src/index.#{@script_language})...")
-      system('eslint init', '-y')
+    at_exit do
+      if @package_manager == 'bun'
+        system('bun init -y')
+      elsif @package_manager == 'yarn'
+        system('yarn init -y') &&
+          Process.spawn('yarn add nodemon lite-server @babel/preset-env babel-eslint eslint -D') &&
+          create_file('babel.config', 'json', $babelrc_content) &&
+          Process.spawn('eslint init -y')
+      # puts("Running 'eslint init', please answer questions for that (refer back to choices above if needed)...")
+      # puts("Generating default eslint project, please answer questions (put scripts in ./src/index.#{@script_language})...")
+      else
+        Process.spawn(`#{@package_manager} init -y`) &&
+          Process.spawn(@project_name,
+                        `#{@package_manager} install nodemon lite-server @babel/preset-env babel-eslint eslint -D`) &&
+          create_file('babel.config', 'json', $babelrc_content) &&
+          system('eslint init -y')
+        # puts("Generating project with #{@package_manager}...") &&
+        # puts("Generating default eslint project, please answer questions (put scripts in ./src/index.#{@script_language})...")
+      end
     end
   end
 end
@@ -148,6 +140,5 @@ new_app = GenerateApp.new
 new_app.ask_questions
 
 at_exit do
-  new_app.install_dependencies
   print_cta('Project finished generating!')
 end
